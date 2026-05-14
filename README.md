@@ -66,6 +66,54 @@ Use the deep-review skill on this PR
 
 …or trigger it implicitly with phrases like *"did you miss anything?"*, *"is this thorough?"*, *"check again"*.
 
+## Verify install worked
+
+In a fresh Claude Code session:
+
+- Type `/deep-review` — autocomplete should suggest the skill.
+- Or ask: *"use the deep-review skill on this PR"* — Claude should pick it up by name.
+- If the companion rule is installed, phrases like *"is this thorough?"* should also trigger it automatically.
+
+If none of those work, see **Troubleshooting** below.
+
+## Example output
+
+Abbreviated trace from a real session — see [examples/sample-output.md](examples/sample-output.md) for the full 14-round version.
+
+```
+## Round 1: File Completeness
+Findings: 3 new
+- Missing test plan entry for `src/api/auth.ts` — Severity: HIGH
+- New file `src/lib/imageUpload.ts` not mentioned anywhere — Severity: HIGH
+- `src/components/EmptyState.tsx` has no test coverage section — Severity: MEDIUM
+Running total: 3 findings, 0 ship-stoppers.
+
+## Round 5: Client-Server Contract Alignment
+Findings: 2 new
+- 🚨 CRITICAL — Client sends `{ user_id }`, server expects `{ userId }` —
+  every API call to `/profile/update` will silently 400 — SHIP-STOPPER
+- Auth header missing on `/upload` endpoint client-side — Severity: HIGH
+Running total: 8 findings, 1 ship-stopper.
+
+## Round 6: Platform-Specific Paths
+Findings: 1 new
+- 🚨 CRITICAL — Android image-upload branch calls a method that does not
+  exist on the Capacitor bridge — SHIP-STOPPER
+Running total: 9 findings, 2 ship-stoppers.
+
+## Deep Review Complete
+Rounds completed: 15 · Total findings: 14 · Ship-stoppers: 2 (both fixed)
+```
+
+The pattern: each round is one lens, findings get a severity, the loop stops when a full pass of all 14 lenses produces zero new findings.
+
+## Troubleshooting
+
+- **Skill doesn't autocomplete:** confirm the file landed at `~/.claude/skills/deep-review.md` (flat) — both flat and `~/.claude/skills/deep-review/SKILL.md` (directory) layouts work, but pick one.
+- **Claude doesn't auto-invoke on review phrases:** install the companion `rule.md` to `~/.claude/rules/deep-review.md` — it loads passively into every session.
+- **Rule doesn't auto-load:** some Claude Code versions may not auto-discover `~/.claude/rules/`. Fallback: paste the rule's contents into your project's `CLAUDE.md`.
+- **Skill loads but runs only 1-2 rounds:** the model is short-circuiting. Add *"keep going until a full round produces zero new findings"* to your prompt — that's the stop condition.
+
 ## When to use it
 
 - Before merging a PR that touches contract boundaries (API ↔ client, DB rules, auth)
