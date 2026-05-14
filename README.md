@@ -96,6 +96,7 @@ This skill is part of my Claude Code config series:
 - [`claude-code-pm-agents`](https://github.com/aksheyw/claude-code-pm-agents) — 7 product-builder subagents (PM, growth, brand, ASO, SEO, YouTube, comms triage)
 - [`claude-code-rules`](https://github.com/aksheyw/claude-code-rules) — opinionated global rules including the deep-review review-discipline rule that auto-loads this skill
 - [`claude-code-learned-skills`](https://github.com/aksheyw/claude-code-learned-skills) — 3 Docker / SSH / VPS skills auto-extracted from real debugging sessions
+- [`career-command-center-template`](https://github.com/aksheyw/career-command-center-template) — full plugin template for an AI-native job-search workflow (10 skills, 5 personal-data skeletons, hooks)
 
 ## License
 
