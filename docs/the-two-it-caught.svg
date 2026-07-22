@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 250" width="900" height="250" role="img" aria-label="The two release-blocking bugs it caught. First: the app sent a field called user_id while the server expected userId, so every profile update failed silently. Second: the Android build called a camera function that did not exist, so every image upload crashed on Android and worked fine on iPhone. Both had already passed a normal review.">
+  <rect x="0" y="0" width="900" height="250" rx="14" fill="#FFFFFF"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif">
+
+    <!-- card 1 -->
+    <rect x="24" y="24" width="414" height="196" rx="10" fill="#FDF6F5" stroke="#B42318" stroke-width="2"/>
+    <text x="48" y="56" font-size="13" font-weight="700" fill="#B42318" letter-spacing="1.2">WOULD HAVE BLOCKED THE LAUNCH</text>
+
+    <text x="48" y="93" font-size="16" fill="#5C4A47">The app sent</text>
+    <text x="152" y="93" font-size="16" font-weight="700" fill="#1B2A4A" font-family="ui-monospace, Menlo, Consolas, monospace">user_id</text>
+
+    <text x="48" y="122" font-size="16" fill="#5C4A47">The server wanted</text>
+    <text x="192" y="122" font-size="16" font-weight="700" fill="#1B2A4A" font-family="ui-monospace, Menlo, Consolas, monospace">userId</text>
+
+    <line x1="48" y1="142" x2="414" y2="142" stroke="#E8D5D2" stroke-width="1.5"/>
+    <text x="48" y="170" font-size="16" font-weight="700" fill="#B42318">Every profile update fails,</text>
+    <text x="48" y="194" font-size="16" font-weight="700" fill="#B42318">and nothing says so.</text>
+
+    <!-- card 2 -->
+    <rect x="462" y="24" width="414" height="196" rx="10" fill="#FDF6F5" stroke="#B42318" stroke-width="2"/>
+    <text x="486" y="56" font-size="13" font-weight="700" fill="#B42318" letter-spacing="1.2">WOULD HAVE BLOCKED THE LAUNCH</text>
+
+    <text x="486" y="93" font-size="16" fill="#5C4A47">The Android build called a</text>
+    <text x="486" y="122" font-size="16" fill="#5C4A47">camera function that did not exist</text>
+
+    <line x1="486" y1="142" x2="852" y2="142" stroke="#E8D5D2" stroke-width="1.5"/>
+    <text x="486" y="170" font-size="16" font-weight="700" fill="#B42318">Every photo upload crashes</text>
+    <text x="486" y="194" font-size="16" font-weight="700" fill="#B42318">on Android, works on iPhone.</text>
+  </g>
+</svg>

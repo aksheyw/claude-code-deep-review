@@ -1,84 +1,132 @@
-# Deep Review: a 14-lens review methodology for Claude Code
+<div align="center">
 
-> **A single-pass review catches ~60% of issues. The other 40% hide behind assumptions that feel obviously correct.**
+# 🔍 Deep Review: a 14-lens review loop for Claude Code
 
-This is a Claude Code skill that runs reviews through 14 sequential lenses (file completeness, contract alignment, security, state transitions, infra config, and 9 more) until a full pass produces zero new findings.
+### I review my own work fourteen times before I ship it, because one pass keeps missing things.
 
-In its first real-world use it found **14 production bugs across 28 rounds**, including 2 ship-stoppers that would have broken every API call and every image upload in production. None were caught by the initial single-pass review.
+![requires](https://img.shields.io/badge/requires-Claude%20Code-D97757) ![lenses](https://img.shields.io/badge/lenses-14-0E9384) ![stops](https://img.shields.io/badge/stops-when%20a%20whole%20pass%20is%20clean-1B2A4A) ![install](https://img.shields.io/badge/install-2%20files-blue) ![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen) ![license](https://img.shields.io/badge/license-MIT-green)
 
-## Why I built this
+</div>
 
-I was about to ship a release that had been "code-reviewed" once. Something felt off, so I tried reviewing it again with a different mental angle and found a critical bug. So I tried a third angle. Found another.
+---
 
-By the time I was done, I had a list of 14 lenses, 28 rounds of review, and 14 bugs that wouldn't have been caught by traditional review. The pattern was clear. Each lens catches a different *category* of issue. Run them all and stop only when an entire round comes up empty.
+Claude Code is Anthropic's AI assistant for writing software, and this is one file you hand it. It
+reviews your work through fourteen different lenses, then keeps going until a whole pass finds nothing
+new.
 
-I codified the lenses into a Claude Code skill so I'd never ship without running them. This repo is that skill.
+The first time I ran it on a release it found **14 production bugs across 28 rounds**. Two would have
+broken every server call and every image upload on day one, and the review before had found neither.
 
-## What's in this repo
+<img src="docs/how-it-works.svg" width="100%"
+     alt="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. If that pass finds anything new, all fourteen run again. When a pass finds nothing new, you ship.">
 
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | The skill itself: drop into `~/.claude/skills/deep-review.md` |
-| `rule.md` | A short rule that auto-loads the skill on review tasks: drop into `~/.claude/rules/deep-review.md` |
-| `examples/sample-output.md` | What a deep-review session looks like in practice |
-| `LICENSE` | MIT |
-
-## The 14 lenses (one-line summary)
-
-1. **File / Section Completeness**: does the artifact cover every file/section?
-2. **Function-Level Audit**: for files covered, is every exported function addressed?
-3. **Category Gaps**: entire categories missing (e.g. no E2E tests at all)?
-4. **Cleanup & Performance**: timers, listeners, leaks, O(n²) in hot paths
-5. **Client-Server Contract**: ship-stoppers live here
-6. **Platform-Specific Paths**: both branches of platform `if` covered?
-7. **Network & Error Conditions**: offline, rate limit, timeout
-8. **State Transitions**: every state machine, both directions
-9. **UX Details**: back button in modals, empty states, image fallbacks
-10. **Infrastructure & Config**: every config file, cover-to-cover
-11. **Security & Secrets**: credentials, CORS, headers, sanitization
-12. **Data Layer Rules**: every collection AND subcollection
-13. **Existing Work Quality**: tests that test the wrong thing
-14. **Internal Consistency**: does the document contradict itself?
-
-Full descriptions: see [SKILL.md](SKILL.md).
-
-## Install
-
-Drop the files into your Claude Code config:
+## Installing it takes three lines
 
 ```bash
-# Clone this repo
-git clone https://github.com/aksheyw/claude-code-deep-review.git
-cd claude-code-deep-review
-
-# Install the skill
-cp SKILL.md ~/.claude/skills/deep-review.md
-
-# Optional: install the auto-trigger rule
-cp rule.md ~/.claude/rules/deep-review.md
+git clone https://github.com/aksheyw/claude-code-deep-review.git && cd claude-code-deep-review
+cp SKILL.md ~/.claude/skills/deep-review.md          # the skill itself
+cp rule.md  ~/.claude/rules/deep-review.md           # optional: lets it trigger on its own
 ```
 
-After install, in any Claude Code session run:
+Then ask for it in any session:
 
 ```
-Use the deep-review skill on this PR
+Use the deep-review skill on this pull request
 ```
 
-…or trigger it implicitly with phrases like *"did you miss anything?"*, *"is this thorough?"*, *"check again"*.
+With the optional rule installed it also picks itself up when you ask the obvious things, like *did you
+miss anything?*, *is this thorough?*, or *check again*.
 
-## Verify install worked
+<details>
+<summary><b>🔧 If you're new to Claude Code, or the install didn't take</b></summary>
 
-In a fresh Claude Code session:
+<br>
 
-- Type `/deep-review` and autocomplete should suggest the skill.
-- Or ask: *"use the deep-review skill on this PR"*, and Claude should pick it up by name.
-- If the companion rule is installed, phrases like *"is this thorough?"* should also trigger it automatically.
+Claude Code runs in your terminal, reads the files in your project, and can change them for you. You
+teach it new behaviour by dropping in a *skill*, which is just a markdown file of instructions it loads
+when a matching task comes up. `~/.claude/` is the folder it keeps its own settings in, so copying a
+file there is how you hand it something new. This repo is one skill.
 
-If none of those work, see **Troubleshooting** below.
+**Check it worked.** Open a new session and try any of these:
 
-## Example output
+- Type `/deep-review`. It should offer to complete it for you.
+- Ask *"use the deep-review skill on this pull request"*. It should pick it up by name.
+- If you installed the optional rule, *"is this thorough?"* should set it off by itself.
 
-Abbreviated trace from a real session (see [examples/sample-output.md](examples/sample-output.md) for the full 14-round version).
+**If it didn't:**
+
+- **`/deep-review` doesn't complete when I type it:** check the file actually landed at
+  `~/.claude/skills/deep-review.md`. A folder layout (`~/.claude/skills/deep-review/SKILL.md`) works
+  too, but use one or the other, not both.
+- **It never triggers on its own:** install the optional `rule.md` to `~/.claude/rules/deep-review.md`.
+  That's what makes it listen for review-ish phrasing.
+- **The rule doesn't seem to load:** some versions of Claude Code don't pick up `~/.claude/rules/`
+  automatically. Paste the rule's contents into your project's `CLAUDE.md` file instead, which is the
+  per-project instructions file Claude Code always reads.
+- **It runs one or two rounds and stops:** it's cutting the job short. Add *"keep going until a full
+  round produces zero new findings"* to your request, because that's the actual stopping condition.
+
+</details>
+
+## Why I run fourteen passes and not one
+
+I was about to ship a release that had been reviewed once. Something felt off, so I reviewed it again
+from a different angle and found a serious bug. I tried a third angle and found another. By the time I
+stopped I had fourteen angles and fourteen bugs a normal review had walked straight past.
+
+Each angle catches a different *category* of problem, so I wrote the angles down as a skill so I'd
+never ship without running them, and this repo is that skill.
+
+<details>
+<summary><b>📋 The fourteen lenses, in the order they run</b></summary>
+
+<br>
+
+A *lens* is one pass with one question in mind.
+
+1. **File completeness:** does the work cover every file it claims to?
+2. **Function-level audit:** inside the files it does cover, is every piece of code actually addressed?
+3. **Category gaps:** is a whole category missing, like no end-to-end tests anywhere?
+4. **Cleanup and performance:** timers and listeners left running, memory quietly leaking, slow code on
+   a path that runs constantly.
+5. **Client-server contract:** does the app agree with the server about what it's sending? The worst
+   bugs live here.
+6. **Platform-specific paths:** if the code does one thing on Android and another on iPhone, are both
+   branches covered?
+7. **Network and error conditions:** what happens with no signal, a timeout, or a server refusing to
+   answer.
+8. **State transitions:** every state the app can be in, and every way in and out of it.
+9. **UX details:** the back button inside a popup, blank screens, images that fail to load.
+10. **Infrastructure and config:** every settings file, read end to end.
+11. **Security and secrets:** passwords and keys, which other sites are allowed to call your server
+    (CORS) and with what headers, and anything a user types that reaches the database unchecked.
+12. **Data rules:** every table, and every thing nested inside it, which is the one people forget.
+13. **Quality of what's already there:** tests that pass while testing the wrong thing.
+14. **Internal consistency:** does the document contradict itself?
+
+Full descriptions live in [SKILL.md](SKILL.md).
+
+</details>
+
+## The two that would have shipped were both boring
+
+<img src="docs/the-two-it-caught.svg" width="100%"
+     alt="The two release-blocking bugs it caught. First: the app sent a field called user_id while the server expected userId, so every profile update failed silently. Second: the Android build called a camera function that did not exist, so every image upload crashed on Android and worked fine on iPhone.">
+
+The app was sending a field called `user_id` while the server was looking for `userId`. Same word to a
+human, different word to a machine, so every attempt to update a profile would have failed silently.
+And the Android version was calling a function that didn't exist in the layer connecting the app to the
+phone's camera, so every image upload would have crashed on Android and worked fine on iPhone.
+
+Neither one is exotic, and both of them had already been through a review.
+
+<details>
+<summary><b>📄 What a run actually looks like</b></summary>
+
+<br>
+
+Shortened from a real session. The full version is in
+[examples/sample-output.md](examples/sample-output.md).
 
 ```
 ## Round 1: File Completeness
@@ -105,51 +153,65 @@ Running total: 9 findings, 2 ship-stoppers.
 Rounds completed: 15 · Total findings: 14 · Ship-stoppers: 2 (both fixed)
 ```
 
-The pattern: each round is one lens, findings get a severity, the loop stops when a full pass of all 14 lenses produces zero new findings.
+Each round is one lens, every finding carries a severity, and the loop ends when a full pass of all
+fourteen finds nothing new. *Ship-stopper* is my word for a bug bad enough that you don't release until
+it's fixed.
 
-## Troubleshooting
+</details>
 
-- **Skill doesn't autocomplete:** confirm the file landed at `~/.claude/skills/deep-review.md` (flat). Both flat and `~/.claude/skills/deep-review/SKILL.md` (directory) layouts work, but pick one.
-- **Claude doesn't auto-invoke on review phrases:** install the companion `rule.md` to `~/.claude/rules/deep-review.md`, which loads passively into every session.
-- **Rule doesn't auto-load:** some Claude Code versions may not auto-discover `~/.claude/rules/`. Fallback: paste the rule's contents into your project's `CLAUDE.md`.
-- **Skill loads but runs only 1-2 rounds:** the model is short-circuiting. Add *"keep going until a full round produces zero new findings"* to your prompt, since that's the stop condition.
+## I run it at boundaries, not on typos
 
-## When to use it
+Run it before merging anything that crosses a boundary, where your app talks to a server, a database or
+a login system, because that is where the expensive bugs hide. It's also worth it on a test plan, an
+architecture document or a security review, to check that a whole category didn't get skipped.
 
-- Before merging a PR that touches contract boundaries (API ↔ client, DB rules, auth)
-- After writing a test plan, to verify you covered all categories
-- After an architecture doc, to find inconsistencies and unaddressed failure modes
-- After a security review, to make sure no entire category was skipped
-- Anywhere a single-pass review feels insufficient
+Skip it on small obvious changes, because it's overkill and you'll resent it. Same for rough
+exploration you already plan to redo, and for anything still being designed, where the work is meant to
+be incomplete.
 
-## When NOT to use it
+<details>
+<summary><b>⏳ How long a run takes, and what each file in this repo does</b></summary>
 
-- Trivial single-line changes: overkill
-- Time-boxed exploration where you'll iterate later: defer until ship time
-- When you're still in design phase and the artifact is intentionally incomplete
-
-## Expected runtime
+<br>
 
 | Scope | Rounds |
 |-------|--------|
-| Small artifact (single file, short doc) | 5-8 |
-| Medium (multi-file, full plan) | 10-15 |
-| Large (full codebase, launch readiness) | 15-20+ |
+| Small: one file, a short document | 5-8 |
+| Medium: several files, a full plan | 10-15 |
+| Large: a whole codebase, or a launch readiness check | 15-20+ |
 
-Each round is one lens. The skill stops when a full lens pass produces zero new findings.
+Each round is one lens. It stops when a full pass produces nothing new.
 
-## Companion repos
+| File | What it's for |
+|------|---------|
+| `SKILL.md` | The skill itself. This is the file that does the work. |
+| `rule.md` | Optional. A short instruction that makes the assistant reach for the skill on its own when you ask review-ish questions. |
+| `examples/sample-output.md` | What a real session looks like, start to finish. |
+| `LICENSE` | MIT, so you're free to use it in your own work. |
 
-This skill is part of my Claude Code config series:
-- [`claude-code-pm-agents`](https://github.com/aksheyw/claude-code-pm-agents): 7 product-builder subagents (PM, growth, brand, ASO, SEO, YouTube, comms triage)
-- [`claude-code-rules`](https://github.com/aksheyw/claude-code-rules): opinionated global rules including the deep-review review-discipline rule that auto-loads this skill
-- [`claude-code-learned-skills`](https://github.com/aksheyw/claude-code-learned-skills): 12 skills auto-extracted from real debugging and research sessions (Docker/SSH/VPS, ML pipelines, prompting guides, quality tooling, a project wiki)
-- [`career-command-center-template`](https://github.com/aksheyw/career-command-center-template): full plugin template for an AI-native job-search workflow (12 skills, 8 personal-data skeletons, hooks)
+</details>
 
-## License
+<details>
+<summary><b>📦 The other four Claude Code toolkits I keep in the open</b></summary>
 
-MIT (see [LICENSE](LICENSE)).
+<br>
+
+- [`claude-code-pm-agents`](https://github.com/aksheyw/claude-code-pm-agents): 7 specialist assistants
+  for product work, covering PM docs, growth, brand, ASO (app-store listings), SEO, YouTube, and inbox
+  triage.
+- [`claude-code-rules`](https://github.com/aksheyw/claude-code-rules): the standing instructions I load
+  into every session, including the one that reaches for this skill automatically.
+- [`claude-code-learned-skills`](https://github.com/aksheyw/claude-code-learned-skills): 12 skills
+  pulled out of real debugging and research sessions, covering Docker, SSH and VPS (rented server)
+  work, ML pipelines, prompting guides, quality tooling, and a project wiki.
+- [`career-command-center-template`](https://github.com/aksheyw/career-command-center-template): a full
+  job-search setup you can copy and fill in with your own details, with 12 skills, 8 blank templates
+  for your own data, and the automation to run it.
+
+</details>
 
 ---
 
-Built by [Akshey Walia](https://github.com/aksheyw). If you use this and find bugs the lenses missed, open an issue, because the lens list is meant to grow.
+MIT licensed, so you're free to use it in your own work. Built by
+[Akshey Walia](https://github.com/aksheyw). If you use this and hit a bug the lenses missed, open an
+issue. The list is meant to grow.
