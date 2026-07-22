@@ -20,6 +20,46 @@ broken every server call and every image upload on day one, and the review befor
 <img src="docs/how-it-works.svg" width="100%"
      alt="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. If that pass finds anything new, all fourteen run again. When a pass finds nothing new, you ship.">
 
+## Why I run fourteen passes and not one
+
+I was about to ship a release that had been reviewed once. Something felt off, so I reviewed it again
+from a different angle and found a serious bug. I tried a third angle and found another. By the time I
+stopped I had fourteen angles and fourteen bugs a normal review had walked straight past.
+
+Each angle catches a different *category* of problem, so I wrote the angles down as a skill so I'd
+never ship without running them, and this repo is that skill.
+
+<details>
+<summary><b>📋 The fourteen lenses, in the order they run</b></summary>
+
+<br>
+
+A *lens* is one pass with one question in mind.
+
+1. **File completeness:** does the work cover every file it claims to?
+2. **Function-level audit:** inside the files it does cover, is every piece of code actually addressed?
+3. **Category gaps:** is a whole category missing, like no end-to-end tests anywhere?
+4. **Cleanup and performance:** timers and listeners left running, memory quietly leaking, slow code on
+   a path that runs constantly.
+5. **Client-server contract:** does the app agree with the server about what it's sending? The worst
+   bugs live here.
+6. **Platform-specific paths:** if the code does one thing on Android and another on iPhone, are both
+   branches covered?
+7. **Network and error conditions:** what happens with no signal, a timeout, or a server refusing to
+   answer.
+8. **State transitions:** every state the app can be in, and every way in and out of it.
+9. **UX details:** the back button inside a popup, blank screens, images that fail to load.
+10. **Infrastructure and config:** every settings file, read end to end.
+11. **Security and secrets:** passwords and keys, which other sites are allowed to call your server
+    (CORS) and with what headers, and anything a user types that reaches the database unchecked.
+12. **Data rules:** every table, and every thing nested inside it, which is the one people forget.
+13. **Quality of what's already there:** tests that pass while testing the wrong thing.
+14. **Internal consistency:** does the document contradict itself?
+
+Full descriptions live in [SKILL.md](SKILL.md).
+
+</details>
+
 ## Installing it takes three lines
 
 ```bash
@@ -65,46 +105,6 @@ file there is how you hand it something new. This repo is one skill.
   per-project instructions file Claude Code always reads.
 - **It runs one or two rounds and stops:** it's cutting the job short. Add *"keep going until a full
   round produces zero new findings"* to your request, because that's the actual stopping condition.
-
-</details>
-
-## Why I run fourteen passes and not one
-
-I was about to ship a release that had been reviewed once. Something felt off, so I reviewed it again
-from a different angle and found a serious bug. I tried a third angle and found another. By the time I
-stopped I had fourteen angles and fourteen bugs a normal review had walked straight past.
-
-Each angle catches a different *category* of problem, so I wrote the angles down as a skill so I'd
-never ship without running them, and this repo is that skill.
-
-<details>
-<summary><b>📋 The fourteen lenses, in the order they run</b></summary>
-
-<br>
-
-A *lens* is one pass with one question in mind.
-
-1. **File completeness:** does the work cover every file it claims to?
-2. **Function-level audit:** inside the files it does cover, is every piece of code actually addressed?
-3. **Category gaps:** is a whole category missing, like no end-to-end tests anywhere?
-4. **Cleanup and performance:** timers and listeners left running, memory quietly leaking, slow code on
-   a path that runs constantly.
-5. **Client-server contract:** does the app agree with the server about what it's sending? The worst
-   bugs live here.
-6. **Platform-specific paths:** if the code does one thing on Android and another on iPhone, are both
-   branches covered?
-7. **Network and error conditions:** what happens with no signal, a timeout, or a server refusing to
-   answer.
-8. **State transitions:** every state the app can be in, and every way in and out of it.
-9. **UX details:** the back button inside a popup, blank screens, images that fail to load.
-10. **Infrastructure and config:** every settings file, read end to end.
-11. **Security and secrets:** passwords and keys, which other sites are allowed to call your server
-    (CORS) and with what headers, and anything a user types that reaches the database unchecked.
-12. **Data rules:** every table, and every thing nested inside it, which is the one people forget.
-13. **Quality of what's already there:** tests that pass while testing the wrong thing.
-14. **Internal consistency:** does the document contradict itself?
-
-Full descriptions live in [SKILL.md](SKILL.md).
 
 </details>
 
