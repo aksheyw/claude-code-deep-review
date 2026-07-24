@@ -86,7 +86,7 @@ Below is a simulated session showing the cadence of the skill. Real findings are
 
 ## Deep Review Complete
 
-- Rounds completed: 15 (stopped at first empty round across all 14 lenses)
+- Rounds completed: 28 (stopped at first empty round across all 14 lenses)
 - Total findings: 14
 - Bugs found: 14 (2 ship-stoppers — both fixed before merge)
 
