@@ -150,7 +150,7 @@ Findings: 1 new
 Running total: 9 findings, 2 ship-stoppers.
 
 ## Deep Review Complete
-Rounds completed: 15 · Total findings: 14 · Ship-stoppers: 2 (both fixed)
+Rounds completed: 28 · Total findings: 14 · Ship-stoppers: 2 (both fixed)
 ```
 
 Each round is one lens, every finding carries a severity, and the loop ends when a full pass of all
