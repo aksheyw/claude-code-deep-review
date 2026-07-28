@@ -125,7 +125,7 @@ Neither one is exotic, and both of them had already been through a review.
 
 <br>
 
-Shortened from a real session. The full version is in
+An illustration of the cadence, shortened. The longer one is in
 [examples/sample-output.md](examples/sample-output.md).
 
 ```
@@ -150,7 +150,7 @@ Findings: 1 new
 Running total: 9 findings, 2 ship-stoppers.
 
 ## Deep Review Complete
-Rounds completed: 28 · Total findings: 14 · Ship-stoppers: 2 (both fixed)
+Stopped at the first clean pass of all 14 lenses · Total findings: 14 · Ship-stoppers: 2 (both fixed)
 ```
 
 Each round is one lens, every finding carries a severity, and the loop ends when a full pass of all
