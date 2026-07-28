@@ -186,7 +186,7 @@ Each round is one lens. It stops when a full pass produces nothing new.
 |------|---------|
 | `SKILL.md` | The skill itself. This is the file that does the work. |
 | `rule.md` | Optional. A short instruction that makes the assistant reach for the skill on its own when you ask review-ish questions. |
-| `examples/sample-output.md` | What a real session looks like, start to finish. |
+| `examples/sample-output.md` | An illustration of a run, round by round, start to finish. |
 | `LICENSE` | MIT, so you're free to use it in your own work. |
 
 </details>
