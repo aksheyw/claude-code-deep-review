@@ -106,9 +106,9 @@ file there is how you hand it something new. This repo is one skill.
   that file so you are not running two copies.
 - **It never triggers on its own:** install the optional `rule.md` to `~/.claude/rules/deep-review.md`.
   That's what makes it listen for review-ish phrasing.
-- **The rule doesn't seem to load:** some versions of Claude Code don't pick up `~/.claude/rules/`
-  automatically. Paste the rule's contents into your project's `CLAUDE.md` file instead, which is the
-  per-project instructions file Claude Code always reads.
+- **The rule doesn't seem to load:** run `/context` and look under **Memory files**. Claude Code reads
+  `~/.claude/rules/` on its own, for every project, so you don't have to wire it up anywhere. If the
+  file isn't in that list, check it actually landed at `~/.claude/rules/deep-review.md`.
 - **It runs one or two rounds and stops:** it's cutting the job short. Add *"keep going until a full
   round produces zero new findings"* to your request, because that's the actual stopping condition.
 
