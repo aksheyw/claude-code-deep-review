@@ -60,13 +60,18 @@ Full descriptions live in [SKILL.md](SKILL.md).
 
 </details>
 
-## Installing it takes three lines
+## Installing it takes four lines
 
 ```bash
 git clone https://github.com/aksheyw/claude-code-deep-review.git && cd claude-code-deep-review
-cp SKILL.md ~/.claude/skills/deep-review.md          # the skill itself
+mkdir -p ~/.claude/skills/deep-review ~/.claude/rules
+cp SKILL.md ~/.claude/skills/deep-review/SKILL.md    # the skill itself
 cp rule.md  ~/.claude/rules/deep-review.md           # optional: lets it trigger on its own
 ```
+
+A skill is a folder containing `SKILL.md`, which is the layout the Claude Code docs specify. The
+`mkdir` line matters more than it looks: on a machine that has never had a skill or a rule installed,
+neither of those folders exists yet, and `cp` stops with "No such file or directory".
 
 Then ask for it in any session:
 
@@ -96,8 +101,9 @@ file there is how you hand it something new. This repo is one skill.
 **If it didn't:**
 
 - **`/deep-review` doesn't complete when I type it:** check the file actually landed at
-  `~/.claude/skills/deep-review.md`. A folder layout (`~/.claude/skills/deep-review/SKILL.md`) works
-  too, but use one or the other, not both.
+  `~/.claude/skills/deep-review/SKILL.md`. Run `ls ~/.claude/skills/deep-review/` and it should print
+  `SKILL.md`. If you previously installed this as a loose `~/.claude/skills/deep-review.md`, delete
+  that file so you are not running two copies.
 - **It never triggers on its own:** install the optional `rule.md` to `~/.claude/rules/deep-review.md`.
   That's what makes it listen for review-ish phrasing.
 - **The rule doesn't seem to load:** some versions of Claude Code don't pick up `~/.claude/rules/`
