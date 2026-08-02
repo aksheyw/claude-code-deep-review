@@ -93,6 +93,6 @@ Stop when a full round produces zero findings. Expected rounds by scope:
 
 ## Origin
 
-This methodology was developed during a production React application code review where 28 rounds found 14 production bugs — including 2 ship-stoppers that would have broken every API call and every image upload in production. None were caught by the initial single-pass review.
+This methodology came out of writing a test plan for a production React app. Twenty-eight rounds turned up 14 production bugs, including 2 ship-stoppers that would have broken every API call and every image upload in production. A ten-agent code review had already run on the same codebase that day and caught none of them. They surfaced from writing the test cases, not from reading the code.
 
 The key insight: a single pass validates what you expect to find, so the most critical bugs, the ones hiding behind assumptions that feel obviously correct, slip past it. In that run both ship-stoppers did, and only surfaced once a later pass looked through a different lens.

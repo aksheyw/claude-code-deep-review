@@ -7,6 +7,6 @@ Before claiming any test plan, security review, or architecture review is "compl
 3. Save all findings to memory after each round
 4. Flag CRITICAL/ship-stopper bugs immediately
 
-**Origin:** developed on a production React app code review — 28 rounds found 14 production bugs (2 ship-stoppers) that single-pass review missed.
+**Origin:** developed while writing a test plan for a production React app. 28 rounds found 14 production bugs (2 ship-stoppers) that a code review of the same codebase, run the same day, did not catch.
 
 **Methodology:** see `SKILL.md` in this repo.
