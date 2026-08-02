@@ -1,6 +1,6 @@
 ---
 name: deep-review
-description: Iterative deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment — before claiming it is complete. Runs multiple passes from different analysis angles until no new findings emerge. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
+description: Iterative deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment, before claiming it is complete. Runs multiple passes from different analysis angles until no new findings emerge. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
 ---
 
 # Deep Review — 14-Lens Iterative Methodology
