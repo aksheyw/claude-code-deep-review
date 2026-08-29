@@ -1,6 +1,7 @@
 # Sample Output — what a deep-review session looks like
 
-Below is a simulated session showing the cadence of the skill. Real findings are anonymized.
+Below is an illustration of the cadence of a run. The findings in it are made up. It is not a
+record of a real session.
 
 ---
 
@@ -78,7 +79,7 @@ Below is a simulated session showing the cadence of the skill. Real findings are
 
 ---
 
-## Round 15: File Completeness (re-run)
+## The second pass: all fourteen lenses, re-run
 
 **Findings:** 0 new.
 
@@ -86,12 +87,6 @@ Below is a simulated session showing the cadence of the skill. Real findings are
 
 ## Deep Review Complete
 
-- Stopped at the first round that produced nothing new, after a full pass of all 14 lenses
+- Stopped after a full pass of all fourteen lenses produced nothing new
 - Total findings: 14
-- Bugs found: 14 (2 ship-stoppers — both fixed before merge)
-
-Without the deep review, both ship-stoppers would have shipped to production:
-1. Every profile update would silently fail
-2. Every Android image upload would crash
-
-Single-pass review caught zero of these.
+- Bugs found: 14 (2 ship-stoppers — both fixed before the release)

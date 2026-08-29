@@ -20,11 +20,12 @@ broken every server call and every image upload on day one, and the review befor
 <img src="docs/how-it-works.svg" width="100%"
      alt="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. If that pass finds anything new, all fourteen run again. When a pass finds nothing new, you ship.">
 
-## Why I run fourteen passes and not one
+## Why I run fourteen lenses and not one
 
-I was about to ship a release that had been reviewed once. Something felt off, so I reviewed it again
-from a different angle and found a serious bug. I tried a third angle and found another. By the time I
-stopped I had fourteen angles and fourteen bugs a normal review had walked straight past.
+I was about to ship a release that had already been through a code review. Writing the test plan for
+it, I kept going back over the same work from a different angle each time, and new angles kept
+turning up what the earlier ones had missed. By the time I stopped there were fourteen production
+bugs, and two of them would have stopped the release.
 
 Each angle catches a different *category* of problem, so I wrote the angles down as a skill so I'd
 never ship without running them, and this repo is that skill.
@@ -34,7 +35,7 @@ never ship without running them, and this repo is that skill.
 
 <br>
 
-A *lens* is one pass with one question in mind.
+A *lens* is one round with one question in mind.
 
 1. **File completeness:** does the work cover every file it claims to?
 2. **Function-level audit:** inside the files it does cover, is every piece of code actually addressed?
@@ -110,58 +111,30 @@ file there is how you hand it something new. This repo is one skill.
   `~/.claude/rules/` on its own, for every project, so you don't have to wire it up anywhere. If the
   file isn't in that list, check it actually landed at `~/.claude/rules/deep-review.md`.
 - **It runs one or two rounds and stops:** it's cutting the job short. Add *"keep going until a full
-  round produces zero new findings"* to your request, because that's the actual stopping condition.
+  pass of all fourteen produces zero new findings"* to your request, because that's the actual
+  stopping condition.
 
 </details>
 
 ## The two that would have shipped were both boring
 
-<img src="docs/the-two-it-caught.svg" width="100%"
-     alt="The two release-blocking bugs it caught. First: the app sent a field called user_id while the server expected userId, so every profile update failed silently. Second: the Android build called a camera function that did not exist, so every image upload crashed on Android and worked fine on iPhone.">
+I'd just made the app's six server endpoints ask for proof of who you are, and the file in the app that
+does the talking, `src/lib/n8n.js`, still wasn't sending the `Authorization` header that carries that
+proof, so every call in production would have come back refused. And `cors.json`, the CORS list of
+which websites are allowed to fetch your stored images, named localhost and the Firebase addresses
+but not `plantsage.app`, the live site, so no image would have loaded or uploaded on day one.
 
-The app was sending a field called `user_id` while the server was looking for `userId`. Same word to a
-human, different word to a machine, so every attempt to update a profile would have failed silently.
-And the Android version was calling a function that didn't exist in the layer connecting the app to the
-phone's camera, so every image upload would have crashed on Android and worked fine on iPhone.
-
-Neither one is exotic, and both of them had already been through a review.
+Neither one is exotic, and both had already been through a review.
 
 <details>
-<summary><b>📄 What a run actually looks like</b></summary>
+<summary><b>📄 How a run is structured</b></summary>
 
 <br>
 
-An illustration of the cadence, shortened. The longer one is in
-[examples/sample-output.md](examples/sample-output.md).
-
-```
-## Round 1: File Completeness
-Findings: 3 new
-- Missing test plan entry for `src/api/auth.ts` — Severity: HIGH
-- New file `src/lib/imageUpload.ts` not mentioned anywhere — Severity: HIGH
-- `src/components/EmptyState.tsx` has no test coverage section — Severity: MEDIUM
-Running total: 3 findings, 0 ship-stoppers.
-
-## Round 5: Client-Server Contract Alignment
-Findings: 2 new
-- 🚨 CRITICAL — Client sends `{ user_id }`, server expects `{ userId }` —
-  every API call to `/profile/update` will silently 400 — SHIP-STOPPER
-- Auth header missing on `/upload` endpoint client-side — Severity: HIGH
-Running total: 8 findings, 1 ship-stopper.
-
-## Round 6: Platform-Specific Paths
-Findings: 1 new
-- 🚨 CRITICAL — Android image-upload branch calls a method that does not
-  exist on the Capacitor bridge — SHIP-STOPPER
-Running total: 9 findings, 2 ship-stoppers.
-
-## Deep Review Complete
-Stopped at the first clean pass of all 14 lenses · Total findings: 14 · Ship-stoppers: 2 (both fixed)
-```
-
 Each round is one lens, every finding carries a severity, and the loop ends when a full pass of all
 fourteen finds nothing new. *Ship-stopper* is my word for a bug bad enough that you don't release until
-it's fixed.
+it's fixed. There's a worked illustration in
+[examples/sample-output.md](examples/sample-output.md).
 
 </details>
 
@@ -176,23 +149,15 @@ exploration you already plan to redo, and for anything still being designed, whe
 be incomplete.
 
 <details>
-<summary><b>⏳ How long a run takes, and what each file in this repo does</b></summary>
+<summary><b>⏳ What the files in this repo are for</b></summary>
 
 <br>
-
-| Scope | Rounds |
-|-------|--------|
-| Small: one file, a short document | 5-8 |
-| Medium: several files, a full plan | 10-15 |
-| Large: a whole codebase, or a launch readiness check | 15-20+ |
-
-Each round is one lens. It stops when a full pass produces nothing new.
 
 | File | What it's for |
 |------|---------|
 | `SKILL.md` | The skill itself. This is the file that does the work. |
 | `rule.md` | Optional. A short instruction that makes the assistant reach for the skill on its own when you ask review-ish questions. |
-| `examples/sample-output.md` | An illustration of a run, round by round, start to finish. |
+| `examples/sample-output.md` | An illustration of a run, shortened. |
 | `LICENSE` | MIT, so you're free to use it in your own work. |
 
 </details>

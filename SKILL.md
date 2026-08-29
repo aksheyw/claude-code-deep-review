@@ -1,11 +1,11 @@
 ---
 name: deep-review
-description: Iterative deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment, before claiming it is complete. Runs multiple passes from different analysis angles until no new findings emerge. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
+description: Iterative deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment, before claiming it is complete. Runs fourteen lenses from different analysis angles and repeats the full set until a whole pass finds nothing new. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
 ---
 
 # Deep Review — 14-Lens Iterative Methodology
 
-Apply 14 sequential lenses to the target artifact. Each lens examines the work from a different angle. Continue until a full round produces ZERO new findings.
+Apply 14 sequential lenses to the target artifact. Each lens examines the work from a different angle. Continue until a full pass of all fourteen produces ZERO new findings.
 
 ## Rules
 
@@ -14,7 +14,7 @@ Apply 14 sequential lenses to the target artifact. Each lens examines the work f
 3. Document every finding with specific references (file:line if code, section name if document)
 4. Flag CRITICAL/ship-stopper issues immediately — do not wait until all lenses are done
 5. Save findings after every round
-6. Stop ONLY when a complete round finds zero new findings
+6. Stop ONLY when a complete pass of all fourteen finds zero new findings
 
 ## The 14 Lenses
 
@@ -77,17 +77,15 @@ When complete:
 
 ```
 ## Deep Review Complete
-- Rounds completed: N (stopped at first empty round)
+- Rounds completed: N (stopped at the first empty pass)
 - Total findings: X
 - Bugs found: Y (Z ship-stoppers)
 ```
 
 ## When to Stop
 
-Stop when a full round produces zero findings. Expected rounds by scope:
-- Small artifact (single file, short doc): 5-8 rounds
-- Medium artifact (multi-file, full plan): 10-15 rounds
-- Large artifact (full codebase, launch readiness): 15-20+ rounds
+Stop when a full pass of all fourteen produces zero findings. A review cannot finish before one
+complete pass has run, so the smallest possible run is fourteen rounds.
 
 **Never stop immediately after finding a ship-stopper.** There is usually a second one nearby — they cluster around contract boundaries and security rules.
 
@@ -95,4 +93,4 @@ Stop when a full round produces zero findings. Expected rounds by scope:
 
 This methodology came out of writing a test plan for a production React app. Twenty-eight rounds turned up 14 production bugs, including 2 ship-stoppers that would have broken every API call and every image upload in production. A ten-agent code review had already run on the same codebase that day and caught none of them. They surfaced from writing the test cases, not from reading the code.
 
-The key insight: a single pass validates what you expect to find, so the most critical bugs, the ones hiding behind assumptions that feel obviously correct, slip past it. In that run both ship-stoppers did, and only surfaced once a later pass looked through a different lens.
+The key insight: a single pass validates what you expect to find, so the most critical bugs, the ones hiding behind assumptions that feel obviously correct, slip past it. In that run both ship-stoppers did.
