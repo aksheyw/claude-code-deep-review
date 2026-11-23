@@ -117,4 +117,4 @@ issues, but cost 2.7 times as much as one pass and raised about 50% more false a
 
 This methodology came out of writing a test plan for a production React app. Twenty-eight rounds turned up 14 production bugs, including 2 ship-stoppers that would have broken every API call and every image upload in production. A ten-agent code review had already run on the same codebase that day and caught none of them. They surfaced from writing the test cases, not from reading the code.
 
-The key insight: a single pass validates what you expect to find, so the most critical bugs, the ones hiding behind assumptions that feel obviously correct, slip past it. In that run both ship-stoppers did.
+In that run, one of the two ship-stoppers took more than fourteen rounds to find. Round 5 caught the missing auth token. The storage setting that would have blocked image uploads only surfaced in round 25.
