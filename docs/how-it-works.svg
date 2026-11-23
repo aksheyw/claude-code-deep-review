@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 268" width="900" height="268" role="img" aria-label="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. By default that one pass is the review, and you ship. For a release, if the pass found anything new, all fourteen run again, until a pass finds nothing new.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 268" width="900" height="268" role="img" aria-label="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. By default that one pass is the review: you fix what it found, then ship. If you asked for the loop and the pass found anything new, all fourteen run again, until a pass finds nothing new.">
   <rect x="0" y="0" width="900" height="268" rx="14" fill="#FFFFFF"/>
 
   <defs>
@@ -27,21 +27,21 @@
 
     <!-- C: the gate -->
     <rect x="548" y="44" width="170" height="100" rx="10" fill="#F3F5F9" stroke="#1B2A4A" stroke-width="2"/>
-    <text x="633" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#1B2A4A">A release, and it</text>
-    <text x="633" y="100" text-anchor="middle" font-size="15" font-weight="700" fill="#1B2A4A">found something</text>
-    <text x="633" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#1B2A4A">new?</text>
+    <text x="633" y="80" text-anchor="middle" font-size="15" font-weight="700" fill="#1B2A4A">You asked for the</text>
+    <text x="633" y="100" text-anchor="middle" font-size="15" font-weight="700" fill="#1B2A4A">loop, and it found</text>
+    <text x="633" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#1B2A4A">something new?</text>
 
     <line x1="720" y1="94" x2="746" y2="94" stroke="#1B2A4A" stroke-width="2.5" marker-end="url(#ah)"/>
     <text x="733" y="80" text-anchor="middle" font-size="14" font-weight="700" fill="#1B2A4A">no</text>
 
     <!-- D: done -->
     <rect x="752" y="44" width="124" height="100" rx="10" fill="#1B2A4A"/>
-    <text x="814" y="87" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">Now you</text>
-    <text x="814" y="111" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">can ship</text>
+    <text x="814" y="87" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">Fix it all,</text>
+    <text x="814" y="111" text-anchor="middle" font-size="17" font-weight="700" fill="#FFFFFF">then ship</text>
 
     <!-- loop back -->
     <path d="M 633 146 L 633 206 L 364 206 L 364 150" fill="none" stroke="#B42318" stroke-width="2.5"
           stroke-dasharray="7 5" marker-end="url(#ah)"/>
-    <text x="498" y="230" text-anchor="middle" font-size="15" font-weight="700" fill="#B42318">yes, so run all 14 again (the loop)</text>
+    <text x="498" y="230" text-anchor="middle" font-size="15" font-weight="700" fill="#B42318">yes, so run all 14 again</text>
   </g>
 </svg>

@@ -2,23 +2,23 @@
 
 # 🔍 Deep Review: a 14-lens review for Claude Code
 
-### I review my own work through fourteen lenses before I ship it, because one angle keeps missing things.
+### I review my own work through fourteen lenses before I ship it, because a single review keeps missing things.
 
-![requires](https://img.shields.io/badge/requires-Claude%20Code-D97757) ![lenses](https://img.shields.io/badge/lenses-14-0E9384) ![passes](https://img.shields.io/badge/passes-1%20by%20default%2C%20a%20loop%20for%20releases-1B2A4A) ![install](https://img.shields.io/badge/install-2%20files-blue) ![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen) ![license](https://img.shields.io/badge/license-MIT-green)
+![requires](https://img.shields.io/badge/requires-Claude%20Code-D97757) ![lenses](https://img.shields.io/badge/lenses-14-0E9384) ![passes](https://img.shields.io/badge/passes-1%20by%20default%2C%20a%20loop%20on%20request-1B2A4A) ![install](https://img.shields.io/badge/install-2%20files-blue) ![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen) ![license](https://img.shields.io/badge/license-MIT-green)
 
 </div>
 
 ---
 
 Claude Code is Anthropic's AI assistant for writing software, and this is one file you hand it. It
-reviews your work through fourteen different lenses in one pass. For a release, it can keep going until
-a whole pass finds nothing new.
+reviews your work through fourteen different lenses in one pass. Ask for the loop, and it keeps going
+until a whole pass finds nothing new.
 
 The first time I ran it on a release it found **14 production bugs across 28 rounds**. Two would have
 broken every server call and every image upload on day one, and the review before had found neither.
 
 <img src="docs/how-it-works.svg" width="100%"
-     alt="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. By default that one pass is the review, and you ship. For a release, if the pass found anything new, all fourteen run again, until a pass finds nothing new.">
+     alt="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. By default that one pass is the review: you fix what it found, then ship. If you asked for the loop and the pass found anything new, all fourteen run again, until a pass finds nothing new.">
 
 ## Why I run fourteen lenses and not one
 
@@ -136,8 +136,8 @@ Each round is one lens, and every finding carries a severity. By default the run
 pass of all fourteen. Ask for the loop and it ends when a full pass finds nothing new instead.
 
 I tested both on product specs with planted defects. A plain review caught 95% of them, one pass of
-the fourteen lenses 99%, and the loop 100%. The loop found more issues overall, but cost 2.7 times as
-much and raised about 50% more false alarms. So one pass is the default, and the loop is there for
+the fourteen lenses 99%, and the loop 100%. The loop found about 23% more confirmed issues, but cost 2.7
+times as much as one pass and raised about 50% more false alarms. So one pass is the default, and the loop is there for
 releases. *Ship-stopper* is my word for a bug bad enough that you don't release until
 it's fixed. There's a worked illustration in
 [examples/sample-output.md](examples/sample-output.md).

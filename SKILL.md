@@ -1,9 +1,9 @@
 ---
 name: deep-review
-description: Deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment, before claiming it is complete. Runs fourteen lenses from different analysis angles in one pass by default; for work that gates a release, it can repeat the full set until a whole pass finds nothing new. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
+description: Deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment, before claiming it is complete. Runs fourteen lenses from different analysis angles in one pass by default. On request it repeats the full set until a whole pass finds nothing new, and it offers that loop for work that gates a release. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
 ---
 
-# Deep Review — 14-Lens Methodology
+# Deep Review: 14-Lens Methodology
 
 Apply 14 sequential lenses to the target artifact. Each lens examines the work from a different angle. By default, run one full pass of all fourteen. Run the loop (repeat full passes until one produces ZERO new findings) only when the user asks for it. See When to Stop.
 
@@ -92,10 +92,10 @@ produces zero new findings. If the work gates a release or a build and the user 
 the pass, then offer the loop in one line.
 
 **Why one pass is the default.** On product specs with planted defects, a plain review caught 95%
-of them, one pass of the fourteen lenses 99%, and the loop 100%. The loop found more issues overall,
-but cost 2.7 times as much and raised about 50% more false alarms.
+of them, one pass of the fourteen lenses 99%, and the loop 100%. The loop found about 23% more confirmed
+issues, but cost 2.7 times as much as one pass and raised about 50% more false alarms.
 
-**Never stop immediately after finding a ship-stopper.** There is usually a second one nearby — they cluster around contract boundaries and security rules.
+**Never stop immediately after finding a ship-stopper.** There is usually a second one nearby: they cluster around contract boundaries and security rules.
 
 ## Origin
 
