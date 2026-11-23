@@ -1,11 +1,11 @@
 ---
 name: deep-review
-description: Iterative deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment, before claiming it is complete. Runs fourteen lenses from different analysis angles and repeats the full set until a whole pass finds nothing new. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
+description: Deep review using 14-lens methodology. Use when reviewing ANY plan, code review, architecture doc, test plan, or security assessment, before claiming it is complete. Runs fourteen lenses from different analysis angles in one pass by default. On request it repeats the full set until a whole pass finds nothing new, and it offers that loop for work that gates a release. Each lens catches issues invisible to previous lenses. Found 14 production bugs (2 ship-stoppers) in its first use. ALWAYS use this when the user asks to review something thoroughly, verify completeness, audit a document, or check if anything was missed. Also triggers on "did you miss anything", "is this thorough", "are you sure", "check again", or similar phrases.
 ---
 
-# Deep Review — 14-Lens Iterative Methodology
+# Deep Review: 14-Lens Methodology
 
-Apply 14 sequential lenses to the target artifact. Each lens examines the work from a different angle. Continue until a full pass of all fourteen produces ZERO new findings.
+Apply 14 sequential lenses to the target artifact. Each lens examines the work from a different angle. By default, run one full pass of all fourteen. Run the loop (repeat full passes until one produces ZERO new findings) only when the user asks for it. See When to Stop.
 
 ## Rules
 
@@ -14,7 +14,7 @@ Apply 14 sequential lenses to the target artifact. Each lens examines the work f
 3. Document every finding with specific references (file:line if code, section name if document)
 4. Flag CRITICAL/ship-stopper issues immediately — do not wait until all lenses are done
 5. Save findings after every round
-6. Stop ONLY when a complete pass of all fourteen finds zero new findings
+6. Stop after one complete pass of all fourteen, unless the user asked for the loop
 
 ## The 14 Lenses
 
@@ -77,17 +77,41 @@ When complete:
 
 ```
 ## Deep Review Complete
-- Rounds completed: N (stopped at the first empty pass)
+- Rounds completed: N (one pass = 14 rounds; a loop stops at the first empty pass)
 - Total findings: X
 - Bugs found: Y (Z ship-stoppers)
 ```
 
 ## When to Stop
 
-Stop when a full pass of all fourteen produces zero findings. A review cannot finish before one
-complete pass has run, so the smallest possible run is fourteen rounds.
+**Default: one pass.** Run all fourteen lenses once, then report. A review cannot finish before one
+complete pass has run, so every run is at least fourteen rounds.
 
-**Never stop immediately after finding a ship-stopper.** There is usually a second one nearby — they cluster around contract boundaries and security rules.
+**The loop, on request.** If the user asks for the loop, repeat full passes of all fourteen until one
+produces zero new findings. If the work gates a release or a build and the user did not ask, finish
+the pass, then offer the loop in one line.
+
+**Every pass of the loop does the work again.** A pass after the first is a fresh run of all
+fourteen lenses, not a recap of pass 1. Each lens in that pass gets its own round in the output
+format, with a `Checks:` line just above `Findings:`. That line names what the lens ran in this
+pass: the files or sections it re-read, the greps or searches it ran, and what it looked for. Use the code tools when you have them. Do not
+reuse pass 1's checks word for word: look from a new angle, such as the symbols a finding touched,
+the callers of a changed function, or the files pass 1 read least. Every finding cites file:line for
+code, or a section name for a document. "0 new" counts only when the `Checks:` line above it is
+filled in. If any lens in a pass shows no checks, that pass has not run, and the loop cannot stop on
+it.
+
+Name only checks you ran in that pass. A search or read you ran counts. Thinking again about a file
+you read earlier also counts, but say so: "reasoned over routes/orders.ts from pass 1, no new
+search". When you have code tools, each pass after the first runs at least one search or read that
+no earlier pass ran, and names it in the `Checks:` line of the lens it served. Write up each pass
+before you start the next one, so the next pass can start from what this one found.
+
+**Why one pass is the default.** On product specs with planted defects, a plain review caught 95%
+of them, one pass of the fourteen lenses 99%, and the loop 100%. The loop found about 23% more confirmed
+issues, but cost 2.7 times as much as one pass and raised about 50% more false alarms.
+
+**Never stop immediately after finding a ship-stopper.** There is usually a second one nearby: they cluster around contract boundaries and security rules.
 
 ## Origin
 

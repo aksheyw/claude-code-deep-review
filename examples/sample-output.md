@@ -1,7 +1,8 @@
 # Sample Output — what a deep-review session looks like
 
 Below is an illustration of the cadence of a run. The findings in it are made up. It is not a
-record of a real session.
+record of a real session. It shows the loop, which runs when you ask for it: a default run stops
+after Round 14.
 
 ---
 
