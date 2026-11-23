@@ -2,8 +2,8 @@
 
 Before claiming any test plan, security review, or architecture review is "complete":
 
-1. Run the `deep-review` skill (14-lens iterative methodology)
-2. Continue until a full pass of all fourteen produces zero new findings
+1. Run the `deep-review` skill (14-lens methodology): one full pass of all fourteen lenses
+2. If the work gates a release or a build, offer the loop: repeat full passes until one produces zero new findings
 3. Save all findings to memory after each round
 4. Flag CRITICAL/ship-stopper bugs immediately
 

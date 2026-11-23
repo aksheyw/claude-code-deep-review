@@ -1,24 +1,24 @@
 <div align="center">
 
-# 🔍 Deep Review: a 14-lens review loop for Claude Code
+# 🔍 Deep Review: a 14-lens review for Claude Code
 
-### I review my own work fourteen times before I ship it, because one pass keeps missing things.
+### I review my own work through fourteen lenses before I ship it, because one angle keeps missing things.
 
-![requires](https://img.shields.io/badge/requires-Claude%20Code-D97757) ![lenses](https://img.shields.io/badge/lenses-14-0E9384) ![stops](https://img.shields.io/badge/stops-when%20a%20whole%20pass%20is%20clean-1B2A4A) ![install](https://img.shields.io/badge/install-2%20files-blue) ![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen) ![license](https://img.shields.io/badge/license-MIT-green)
+![requires](https://img.shields.io/badge/requires-Claude%20Code-D97757) ![lenses](https://img.shields.io/badge/lenses-14-0E9384) ![passes](https://img.shields.io/badge/passes-1%20by%20default%2C%20a%20loop%20for%20releases-1B2A4A) ![install](https://img.shields.io/badge/install-2%20files-blue) ![dependencies](https://img.shields.io/badge/dependencies-none-brightgreen) ![license](https://img.shields.io/badge/license-MIT-green)
 
 </div>
 
 ---
 
 Claude Code is Anthropic's AI assistant for writing software, and this is one file you hand it. It
-reviews your work through fourteen different lenses, then keeps going until a whole pass finds nothing
-new.
+reviews your work through fourteen different lenses in one pass. For a release, it can keep going until
+a whole pass finds nothing new.
 
 The first time I ran it on a release it found **14 production bugs across 28 rounds**. Two would have
 broken every server call and every image upload on day one, and the review before had found neither.
 
 <img src="docs/how-it-works.svg" width="100%"
-     alt="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. If that pass finds anything new, all fourteen run again. When a pass finds nothing new, you ship.">
+     alt="Your pull request, test plan or design document goes through one pass of fourteen lenses: file coverage, the contract between app and server, security, state, config and nine more. By default that one pass is the review, and you ship. For a release, if the pass found anything new, all fourteen run again, until a pass finds nothing new.">
 
 ## Why I run fourteen lenses and not one
 
@@ -110,9 +110,10 @@ file there is how you hand it something new. This repo is one skill.
 - **The rule doesn't seem to load:** run `/context` and look under **Memory files**. Claude Code reads
   `~/.claude/rules/` on its own, for every project, so you don't have to wire it up anywhere. If the
   file isn't in that list, check it actually landed at `~/.claude/rules/deep-review.md`.
-- **It runs one or two rounds and stops:** it's cutting the job short. Add *"keep going until a full
-  pass of all fourteen produces zero new findings"* to your request, because that's the actual
-  stopping condition.
+- **It runs one or two rounds and stops:** it's cutting the job short. Ask for *"one full pass of all
+  fourteen lenses"*. A full pass is fourteen rounds.
+- **You want the loop:** add *"keep going until a full pass of all fourteen produces zero new
+  findings"* to your request. It is worth it before a release.
 
 </details>
 
@@ -131,8 +132,13 @@ Neither one is exotic, and both had already been through a review.
 
 <br>
 
-Each round is one lens, every finding carries a severity, and the loop ends when a full pass of all
-fourteen finds nothing new. *Ship-stopper* is my word for a bug bad enough that you don't release until
+Each round is one lens, and every finding carries a severity. By default the run ends after one full
+pass of all fourteen. Ask for the loop and it ends when a full pass finds nothing new instead.
+
+I tested both on product specs with planted defects. A plain review caught 95% of them, one pass of
+the fourteen lenses 99%, and the loop 100%. The loop found more issues overall, but cost 2.7 times as
+much and raised about 50% more false alarms. So one pass is the default, and the loop is there for
+releases. *Ship-stopper* is my word for a bug bad enough that you don't release until
 it's fixed. There's a worked illustration in
 [examples/sample-output.md](examples/sample-output.md).
 
